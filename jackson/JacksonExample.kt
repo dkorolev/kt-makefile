@@ -13,7 +13,7 @@ fun main() {
     val json = """
       {
         "the_question":"6*9",
-       "the_answer":42
+        "the_answer":42
       }
     """
     val objectFromJson: MyJsonType = mapper.readValue(json)
