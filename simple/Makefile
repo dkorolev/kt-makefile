@@ -1,15 +1,20 @@
 .PHONY: build run clean cleanall
 
+# NOTE(dkorolev): This requires `.kt` files to be named in a `CamelCase.kt` fashion.
+SRC=$(wildcard *.kt)
+BIN=$(SRC:%.kt=%Kt)
+CLASS=$(BIN:%=%.class)
+
 run: build
-	java CodeKt
+	java $(BIN)
 
-build: CodeKt.class
+build: $(CLASS)
 
-CodeKt.class: code.kt
-	kotlinc code.kt
+%Kt.class: %.kt
+	kotlinc "$<"
 
 clean:
-	rm -f CodeKt.class
+	rm -f *.class
 
 cleanall: clean
 	rm -rf META-INF
