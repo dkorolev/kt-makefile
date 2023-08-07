@@ -2,4 +2,10 @@
 *.class
 
 # This is from `kotlinc`.
-*/META-INF/
+**/__kotlinc__/
+
+# Unnecessary, as it will be under `__kotlinc__`, but no harm in keeping it here.
+**/META-INF/
+
+# And this is for what Maven downloads.
+**/__mvn__/
