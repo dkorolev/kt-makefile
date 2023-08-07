@@ -1,0 +1,5 @@
+# Do not check in any build artefacts.
+*.class
+
+# This is from `kotlinc`.
+*/META-INF/
