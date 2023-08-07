@@ -1,0 +1,23 @@
+name: Manual CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  wip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone
+        uses: actions/checkout@v3
+      - name: Install Kotlin
+        run: sudo apt-get install -y kotlin
+      - name: Run `make` in `simple`
+        run: (cd simple; make)
+      - name: Install Maven
+        run: sudo apt-get install -y maven
+      - name: Run `make install` in `jackson`
+        run: (cd jackson; make install)
+      - name: Run `make build` in `jackson`
+        run: (cd jackson; make build)
+      - name: Run `make run` in `jackson`
+        run: (cd jackson; make run)
