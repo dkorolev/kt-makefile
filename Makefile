@@ -8,32 +8,33 @@
 # NOTE(dkorolev): This requires `.kt` files to be named in a `CamelCase.kt` fashion.
 SRC=$(wildcard *.kt)
 BIN=$(SRC:%.kt=%Kt)
-CLASS=$(BIN:%=__kotlinc__/%.class)
+CLASS=$(BIN:%=.kt/%.class)
 
 run: build 
-	@echo '#!/bin/bash\n(cd __kotlinc__; java -cp "$$(find "$$PWD/../__mvn__" -name "*.jar" | tr "\\n" ":")" $(BIN))' >__kotlinc__/run.sh
-	@chmod +x __kotlinc__/run.sh
-	@__kotlinc__/run.sh
+	@echo '#!/bin/bash\n(cd .kt; java -cp "$$(find "$$PWD/../.kt/mvn" -name "*.jar" | tr "\\n" ":")" $(BIN))' >.kt/run.sh
+	@chmod +x .kt/run.sh
+	@.kt/run.sh
 
-install: __mvn__/installed_deps.txt
+install: .kt/mvn/installed_deps.txt
 
-__mvn__/installed_deps.txt: __mvn__/install.sh
-	@__mvn__/install.sh && cp deps.txt __mvn__/installed_deps.txt
+.kt/mvn/installed_deps.txt: .kt/mvn/install.sh
+	@.kt/mvn/install.sh && cp deps.txt .kt/mvn/installed_deps.txt
 
-__mvn__/install.sh: deps.txt
-	@mkdir -p __mvn__
-	@echo '#!/bin/bash\nfor i in $$(cat deps.txt | grep -v "^#") ; do mvn dependency:get -Dmaven.repo.local=./__mvn__ -Dartifact=$$i ; done' >__mvn__/install.sh
-	@chmod +x __mvn__/install.sh
+.kt/mvn/install.sh: deps.txt
+	@mkdir -p .kt/mvn
+	@echo '#!/bin/bash\nfor i in $$(cat deps.txt | grep -v "^#") ; do mvn dependency:get -Dmaven.repo.local=./.kt/mvn -Dartifact=$$i ; done' >.kt/mvn/install.sh
+	@chmod +x .kt/mvn/install.sh
 
 build: install $(CLASS)
 
-__kotlinc__/%Kt.class: %.kt
-	@mkdir -p __kotlinc__
-	@echo 'kotlinc -d __kotlinc__ -cp "$$CLASSPATH"' "$<"
-	@kotlinc -d __kotlinc__ -cp "$(shell find "$$PWD/__mvn__" -name "*.jar" | tr '\n' ':')" "$<"
+.kt/%Kt.class: %.kt
+	@mkdir -p .kt
+	@echo 'kotlinc -d .kt -cp "$$CLASSPATH"' "$<"
+	@kotlinc -d .kt -cp "$(shell find "$$PWD/.kt/mvn" -name "*.jar" | tr '\n' ':')" "$<"
 
 clean:
-	rm -f *.class
+	@mkdir -p .kt
+	rm -f .kt/*.class
 
 cleanall: clean
-	rm -rf __kotlinc__ __mvn__
+	rm -rf .kt

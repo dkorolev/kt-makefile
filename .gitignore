@@ -1,11 +1,1 @@
-# Do not check in any build artefacts.
-*.class
-
-# This is from `kotlinc`.
-**/__kotlinc__/
-
-# Unnecessary, as it will be under `__kotlinc__`, but no harm in keeping it here.
-**/META-INF/
-
-# And this is for what Maven downloads.
-**/__mvn__/
+.kt
