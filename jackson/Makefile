@@ -31,4 +31,4 @@ clean:
 	rm -f *.class
 
 cleanall: clean
-	rm -rf __kotlin__ __mvn__
+	rm -rf __kotlinc__ __mvn__
