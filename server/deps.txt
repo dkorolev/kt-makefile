@@ -1,0 +1,3 @@
+io.ktor:ktor-application-jvm:2.3.3
+io.ktor:ktor-server-core-jvm:2.3.3
+io.ktor:ktor-server-netty-jvm:2.3.3
