@@ -22,7 +22,7 @@ install: .kt/mvn/installed_deps.txt
 
 .kt/mvn/install.sh: deps.txt
 	@mkdir -p .kt/mvn
-	@echo '#!/bin/bash\nfor i in $$(cat deps.txt | grep -v "^#") ; do mvn dependency:get -Dmaven.repo.local=./.kt/mvn -Dartifact=$$i ; done' >.kt/mvn/install.sh
+	@echo '#!/bin/bash\nfor i in $$(cat deps.txt | grep -v "^#") ; do mvn dependency:get -Dmaven.repo.local=./.kt/mvn -Dartifact=$$i -Dtransitive=true ; done' >.kt/mvn/install.sh
 	@chmod +x .kt/mvn/install.sh
 
 build: install $(CLASS)
