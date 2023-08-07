@@ -17,7 +17,7 @@ __mvn__/installed_deps.txt: __mvn__/install.sh
 
 __mvn__/install.sh: deps.txt
 	@mkdir -p __mvn__
-	@echo '#!/bin/bash\nfor i in $$(cat deps.txt) ; do mvn dependency:get -Dmaven.repo.local=./__mvn__ -Dartifact=$$i ; done' >__mvn__/install.sh
+	@echo '#!/bin/bash\nfor i in $$(cat deps.txt | grep -v "^#") ; do mvn dependency:get -Dmaven.repo.local=./__mvn__ -Dartifact=$$i ; done' >__mvn__/install.sh
 	@chmod +x __mvn__/install.sh
 
 build: install $(CLASS)
