@@ -11,8 +11,9 @@ BIN=$(SRC:%.kt=%Kt)
 CLASS=$(BIN:%=.kt/%.class)
 
 run: build 
-	@echo '#!/bin/bash\n(cd .kt; java -cp "$$(find "$$PWD/../.kt/mvn" -name "*.jar" | tr "\\n" ":")" $(BIN))' >.kt/run.sh
+	@echo '#!/bin/bash\n(cd .kt; java -cp "$$(cat kotlin-stdlib.jar.txt):$$(find "$$PWD/../.kt/mvn" -name "*.jar" | tr "\\n" ":")" $(BIN))' >.kt/run.sh
 	@chmod +x .kt/run.sh
+	@echo "(cd .kt; java -cp \"$$CLASSPATH\" "$(BIN)")"
 	@.kt/run.sh
 
 install: .kt/mvn/installed_deps.txt
@@ -25,11 +26,16 @@ install: .kt/mvn/installed_deps.txt
 	@echo '#!/bin/bash\nfor i in $$(cat deps.txt | grep -v "^#") ; do mvn dependency:get -Dmaven.repo.local=./.kt/mvn -Dartifact=$$i -Dtransitive=true ; done' >.kt/mvn/install.sh
 	@chmod +x .kt/mvn/install.sh
 
-build: install $(CLASS)
+build: install .kt/kotlin-stdlib.jar.txt $(CLASS)
+
+.kt/kotlin-stdlib.jar.txt: 
+	@mkdir -p .kt
+	@find $(dirname $(which kotlinc))/.. -name kotlin-stdlib.jar 2>/dev/null | head -n 1 >"$@.tmp"
+	@([ -s "$@.tmp" ]) && mv "$@.tmp" "$@" || (echo 'Could not locate `kotlin-stdlib.jar`, maybe put the path to it into `$@` manually?'; exit 1)
 
 .kt/%Kt.class: %.kt
 	@mkdir -p .kt
-	@echo 'kotlinc -d .kt -cp "$$CLASSPATH"' "$<"
+	@echo 'kotlinc -include-runtime -d .kt -cp "$$CLASSPATH"' "$<"
 	@kotlinc -d .kt -cp "$(shell find "$$PWD/.kt/mvn" -name "*.jar" | tr '\n' ':')" "$<"
 
 clean:
