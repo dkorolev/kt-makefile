@@ -20,7 +20,7 @@ jobs:
         run: (cd jackson; make install)
       - name: Run `make build` in `jackson`
         run: (cd jackson; make build)
-      - name: Run `make run` in `json`
-        run: (cd json; make run)
       - name: Run `make run` in `jackson`
         run: (cd jackson; make run)
+      - name: Run `make run` in `json`
+        run: (cd json; make run)
