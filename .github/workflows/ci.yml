@@ -24,3 +24,5 @@ jobs:
         run: (cd jackson; make run)
       - name: Run `make run` in `json`
         run: (cd json; make run)
+      - name: Run `echo 1 2 | make` in `sum`
+        run: (cd json; echo 1 2 | make)
