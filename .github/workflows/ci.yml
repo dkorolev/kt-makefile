@@ -22,6 +22,8 @@ jobs:
         run: (cd jackson; make build)
       - name: Run `make run` in `jackson`
         run: (cd jackson; make run)
+      - name: Run `make install` in `json`
+        run: (cd json; make install)
       - name: Run `make run` in `json`
         run: (cd json; make run)
       - name: Run `echo 1 2 | make` in `sum`
