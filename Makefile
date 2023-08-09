@@ -30,7 +30,7 @@ build: install .kt/kotlin-stdlib.jar.txt $(CLASS)
 
 .kt/kotlin-stdlib.jar.txt: 
 	@mkdir -p .kt
-	@find /snap/kotlin/current/lib $(dirname $(which kotlinc))/.. -name kotlin-stdlib.jar 2>/dev/null | head -n 1 >"$@.tmp"
+	@find /usr/share/kotlinc/lib /snap/kotlin/current/lib $(dirname $(which kotlinc))/.. -name kotlin-stdlib.jar 2>/dev/null | head -n 1 >"$@.tmp"
 	@([ -s "$@.tmp" ]) && mv "$@.tmp" "$@" || (echo 'Could not locate `kotlin-stdlib.jar`, maybe put the path to it into `$@` manually?'; exit 1)
 
 .kt/%Kt.class: %.kt
