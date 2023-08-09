@@ -12,8 +12,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Install Kotlin
         run: sudo apt-get install -y kotlin
-      - name: Run `make` in `simple`
-        run: (cd simple; make)
+      - name: Run `make` in `hw`
+        run: (cd hw; make) && cat hw/.kt/kotlin-stdlib.jar.txt
       - name: Install Maven
         run: sudo apt-get install -y maven
       - name: Run `make install` in `jackson`

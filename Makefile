@@ -13,7 +13,7 @@ CLASS=$(BIN:%=.kt/%.class)
 run: build 
 	@echo '#!/bin/bash\n(cd .kt; java -cp "$$(cat kotlin-stdlib.jar.txt):$$(find "$$PWD/../.kt/mvn" -name "*.jar" | tr "\\n" ":")" $(BIN))' >.kt/run.sh
 	@chmod +x .kt/run.sh
-	@echo "(cd .kt; java -cp \"$$CLASSPATH\" "$(BIN)")"
+	@echo "(cd .kt; java -cp \"\$$CLASSPATH\" "$(BIN)")"
 	@.kt/run.sh
 
 install: .kt/mvn/installed_deps.txt
@@ -30,7 +30,7 @@ build: install .kt/kotlin-stdlib.jar.txt $(CLASS)
 
 .kt/kotlin-stdlib.jar.txt: 
 	@mkdir -p .kt
-	@find $(dirname $(which kotlinc))/.. -name kotlin-stdlib.jar 2>/dev/null | head -n 1 >"$@.tmp"
+	@find /snap/kotlin/current/lib $(dirname $(which kotlinc))/.. -name kotlin-stdlib.jar 2>/dev/null | head -n 1 >"$@.tmp"
 	@([ -s "$@.tmp" ]) && mv "$@.tmp" "$@" || (echo 'Could not locate `kotlin-stdlib.jar`, maybe put the path to it into `$@` manually?'; exit 1)
 
 .kt/%Kt.class: %.kt
